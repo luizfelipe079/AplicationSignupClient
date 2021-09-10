@@ -3,11 +3,14 @@ package com.trilhaluxfacta.cadastrocliente.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.trilhaluxfacta.cadastrocliente.domain.Cliente;
+import com.trilhaluxfacta.cadastrocliente.domain.Fatura;
 import com.trilhaluxfacta.cadastrocliente.dto.ClienteDTO;
 import com.trilhaluxfacta.cadastrocliente.dto.ClienteNewDTO;
 import com.trilhaluxfacta.cadastrocliente.repository.ClienteRepository;
@@ -19,6 +22,9 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repo;
+	
+//	@Autowired
+//	private RestTemplate restTemplate;
 	
 	@Autowired 
 	private BCryptPasswordEncoder pe;
@@ -103,5 +109,21 @@ public class ClienteService {
 						   objDto.getEmail(),
 						   null,
 						   objDto.getStatus());
+	}
+	
+	public Fatura getFatura(Integer id) {
+		
+		RestTemplate restTemplate = new RestTemplateBuilder()
+											.rootUri("http://localhost:8081/faturas")
+											.basicAuthentication("admin", "password")
+											.build();
+		
+		Fatura fatura = restTemplate.getForObject("/"+id, Fatura.class);
+		System.out.println(fatura);
+		return fatura;
+		
+//		Fatura fatura = restTemplate.getForObject("http://localhost:8081/faturas/"+id, Fatura.class);
+//		return fatura;
+		
 	}
 }

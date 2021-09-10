@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.trilhaluxfacta.cadastrocliente.domain.Cliente;
+import com.trilhaluxfacta.cadastrocliente.domain.Fatura;
 import com.trilhaluxfacta.cadastrocliente.dto.ClienteDTO;
 import com.trilhaluxfacta.cadastrocliente.dto.ClienteNewDTO;
 import com.trilhaluxfacta.cadastrocliente.service.ClienteService;
@@ -79,6 +80,12 @@ public class ClienteController {
 	public ResponseEntity<Void> deleteById(@PathVariable Integer id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/pegarFatura/{id}")
+	public ResponseEntity<Fatura> getFaturaCliente(@PathVariable Integer id){
+		Fatura fatura = service.getFatura(id);
+		return ResponseEntity.ok().body(fatura);
 	}
 	
 }
